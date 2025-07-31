@@ -1,17 +1,25 @@
 import { z } from "zod";
 
-export const baseSignupSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be 8+ characters" }),
-});
+const baseSignupSchema = z
+  .object({
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 export const vendorSignupSchema = baseSignupSchema.extend({
   role: z.literal("vendor"),
   name: z.string().min(1, { message: "Name is required" }),
+  sex: z.enum(["male", "female", "other"], {
+    errorMap: () => ({ message: "Please select sex" }),
+  }),
   phone: z.string().min(5, { message: "Phone is required" }),
-  sex: z.enum(["male", "female", "other"]),
 });
 
 export const buyerSignupSchema = baseSignupSchema.extend({

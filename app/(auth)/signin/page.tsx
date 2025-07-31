@@ -32,7 +32,7 @@ export default function SigninPage() {
           type="email"
           placeholder="Email"
           {...register("email")}
-          className="w-full mb-2 p-2
+          className="w-full mb-4 p-2
                         border border-gray-300 rounded
                         text-gray-800
                         placeholder-gray-500
@@ -47,7 +47,7 @@ export default function SigninPage() {
           type="password"
           placeholder="Password"
           {...register("password")}
-          className="w-full mb-2 p-2
+          className="w-full mb-4 p-2
                         border border-gray-300 rounded
                         text-gray-800
                         placeholder-gray-500

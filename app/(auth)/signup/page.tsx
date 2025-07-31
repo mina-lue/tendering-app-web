@@ -52,8 +52,8 @@ export default function SignupPage() {
               onClick={() => setRole(r)}
               className={`flex-1 py-2 ${
                 role === r
-                  ? "border-b-2 border-green-700 font-medium"
-                  : "text-gray-500"
+                  ? "border-b-2 border-green-950 font-medium text-green-800 cursor-pointer"
+                  : "text-green-900 cursor-pointer"
               }`}
             >
               {r.charAt(0).toUpperCase() + r.slice(1)}
@@ -66,7 +66,12 @@ export default function SignupPage() {
           type="email"
           placeholder="Email"
           {...register("email")}
-          className="w-full mb-2 p-2 border rounded"
+          className="w-full mb-4 p-2
+                        border border-gray-300 rounded
+                        text-gray-800
+                        placeholder-gray-500
+                        focus:outline-none focus:ring-2 focus:ring-green-700
+                    "
         />
         {errors.email && (
           <p className="text-red-600 text-sm">{errors.email.message}</p>
@@ -76,7 +81,12 @@ export default function SignupPage() {
           type="password"
           placeholder="Password"
           {...register("password")}
-          className="w-full mb-2 p-2 border rounded"
+          className="w-full mb-4 p-2
+                        border border-gray-300 rounded
+                        text-gray-800
+                        placeholder-gray-500
+                        focus:outline-none focus:ring-2 focus:ring-green-700
+                    "
         />
         {errors.password && (
           <p className="text-red-600 text-sm">{errors.password.message}</p>
@@ -89,7 +99,12 @@ export default function SignupPage() {
               type="text"
               placeholder="Name"
               {...register("name")}
-              className="w-full mb-2 p-2 border rounded"
+              className="w-full mb-4 p-2
+                        border border-gray-300 rounded
+                        text-gray-800
+                        placeholder-gray-500
+                        focus:outline-none focus:ring-2 focus:ring-green-700
+                    "
             />
             {errors.name && (
               <p className="text-red-600 text-sm">{errors.name.message}</p>
@@ -99,7 +114,12 @@ export default function SignupPage() {
               type="text"
               placeholder="Phone"
               {...register("phone")}
-              className="w-full mb-2 p-2 border rounded"
+              className="w-full mb-4 p-2
+                        border border-gray-300 rounded
+                        text-gray-800
+                        placeholder-gray-500
+                        focus:outline-none focus:ring-2 focus:ring-green-700
+                    "
             />
             {errors.phone && (
               <p className="text-red-600 text-sm">{errors.phone.message}</p>
@@ -107,7 +127,12 @@ export default function SignupPage() {
 
             <select
               {...register("sex")}
-              className="w-full mb-4 p-2 border rounded"
+              className="w-full mb-4 p-2
+                        border border-gray-300 rounded
+                        text-gray-800
+                        placeholder-gray-500
+                        focus:outline-none focus:ring-2 focus:ring-green-700
+                    "
             >
               <option value="">Select Sex</option>
               <option value="male">Male</option>
@@ -124,7 +149,12 @@ export default function SignupPage() {
               type="text"
               placeholder="Company or Person Name"
               {...register("companyName")}
-              className="w-full mb-2 p-2 border rounded"
+              className="w-full mb-4 p-2
+                        border border-gray-300 rounded
+                        text-gray-800
+                        placeholder-gray-500
+                        focus:outline-none focus:ring-2 focus:ring-green-700
+                    "
             />
             {errors.companyName && (
               <p className="text-red-600 text-sm">
@@ -136,7 +166,12 @@ export default function SignupPage() {
               type="text"
               placeholder="TIN"
               {...register("tin")}
-              className="w-full mb-2 p-2 border rounded"
+              className="w-full mb-4 p-2
+                        border border-gray-300 rounded
+                        text-gray-800
+                        placeholder-gray-500
+                        focus:outline-none focus:ring-2 focus:ring-green-700
+                    "
             />
             {errors.tin && (
               <p className="text-red-600 text-sm">{errors.tin.message}</p>
@@ -146,7 +181,12 @@ export default function SignupPage() {
               type="text"
               placeholder="Phone"
               {...register("phone")}
-              className="w-full mb-4 p-2 border rounded"
+              className="w-full mb-4 p-2
+                        border border-gray-300 rounded
+                        text-gray-800
+                        placeholder-gray-500
+                        focus:outline-none focus:ring-2 focus:ring-green-700
+                    "
             />
             {errors.phone && (
               <p className="text-red-600 text-sm">{errors.phone.message}</p>

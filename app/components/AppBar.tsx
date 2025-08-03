@@ -4,17 +4,8 @@ import SignInButton from "./SignInButton";
 
 const AppBar = () => {
     return (
-        <header className="flex gap-4 p-4 bg-[#059F52] shadow">
-            <Link className="transition-colors hover:text-blue-500" href={"/"}>
-                Home Page
-            </Link>
-            <Link
-                className="transition-colors hover:text-blue-500"
-                href={"/dashboard"}
-            >
-                DashBoard
-            </Link>
-
+        <header className="flex gap-4 p-4 bg-[#059F52] shadow top-0 fixed w-full">
+            <h2 className='text-2xl font-semibold'>Tenders</h2>
             <SignInButton />
         </header>
     );

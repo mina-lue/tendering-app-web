@@ -15,7 +15,7 @@ const TenderDetails = () => {
         return  (
             <>
                 <div className="m-4">
-                    <TenderCard />
+                    Tender Details Page
                 </div>
             </>
         )

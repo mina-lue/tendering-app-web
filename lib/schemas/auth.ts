@@ -24,7 +24,7 @@ export const vendorSignupSchema = baseSignupSchema.extend({
 
 export const buyerSignupSchema = baseSignupSchema.extend({
   role: z.literal("buyer"),
-  companyName: z.string().min(1, { message: "Company/Person name required" }),
+  name: z.string().min(1, { message: "Company/Person name required" }),
   tin: z.string().min(5, { message: "TIN is required" }),
   phone: z.string().min(5, { message: "Phone is required" }),
 });

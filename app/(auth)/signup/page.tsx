@@ -8,6 +8,7 @@ import {
   VendorSignup,
   BuyerSignup,
 } from "@/lib/schemas/auth";
+import { backend_url } from "@/lib/constants";
 
 type FormData = VendorSignup | BuyerSignup;
 
@@ -37,7 +38,7 @@ export default function SignupPage() {
   const onSubmit = async (data: FormData) => {
     // strip out confirmPassword before sending
     const { confirmPassword, ...payload } = data as any;
-    await fetch("/api/auth/signup", {
+    await fetch(`${backend_url}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -124,12 +125,12 @@ export default function SignupPage() {
             <input
               type="text"
               placeholder="Company or Person Name"
-              {...register("companyName")}
+              {...register("name")}
               className="w-full mb-4 p-2 border border-gray-300 rounded text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-700"
             />
-            {errors.companyName && (
+            {errors.name && (
               <p className="text-red-600 text-sm">
-                {errors.companyName.message}
+                {errors.name.message}
               </p>
             )}
 

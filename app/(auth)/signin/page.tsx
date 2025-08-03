@@ -1,4 +1,6 @@
-"use client";
+
+'use client';
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signinSchema, Signin } from "@/lib/schemas/auth";
@@ -6,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 export default function SigninPage() {
+  const [authError, setAuthError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -16,6 +19,7 @@ export default function SigninPage() {
 
   const onSubmit = async (data: Signin) => {
     try {
+      setAuthError(null);
       const response = await signIn("credentials", {
         email: data.email,
         password: data.password,
@@ -24,11 +28,13 @@ export default function SigninPage() {
 
       if (response?.error) {
         console.error("Authentication error:", response.error);
+        setAuthError("Incorrect email or password.");
       } else if (response?.ok) {
         router.push('/listing');
       }
     } catch (error) {
       console.error("Sign in error:", error);
+      setAuthError("An unexpected error occurred. Please try again.");
     }
   };
 
@@ -78,6 +84,10 @@ export default function SigninPage() {
         >
           {isSubmitting ? "Signing in…" : "Sign In"}
         </button>
+
+        {authError && (
+          <p className="text-red-600 text-sm mt-4 text-center">{authError}</p>
+        )}
       </form>
     </div>
   );

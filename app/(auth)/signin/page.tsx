@@ -2,6 +2,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signinSchema, Signin } from "@/lib/schemas/auth";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function SigninPage() {
   const {
@@ -10,13 +12,24 @@ export default function SigninPage() {
     formState: { errors, isSubmitting },
   } = useForm<Signin>({ resolver: zodResolver(signinSchema) });
 
+  const router = useRouter();
+
   const onSubmit = async (data: Signin) => {
-    const res = await fetch("/api/auth/signin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    // handle JWT or session cookie, redirect, etc.
+    try {
+      const response = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (response?.error) {
+        console.error("Authentication error:", response.error);
+      } else if (response?.ok) {
+        router.push('/listing');
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
+    }
   };
 
   return (

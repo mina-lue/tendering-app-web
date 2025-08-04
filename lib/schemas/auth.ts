@@ -14,7 +14,7 @@ const baseSignupSchema = z
   });
 
 export const vendorSignupSchema = baseSignupSchema.extend({
-  role: z.literal("vendor"),
+  role: z.literal("VENDOR"),
   name: z.string().min(1, { message: "Name is required" }),
   sex: z.enum(["male", "female", "other"], {
     errorMap: () => ({ message: "Please select sex" }),
@@ -23,7 +23,7 @@ export const vendorSignupSchema = baseSignupSchema.extend({
 });
 
 export const buyerSignupSchema = baseSignupSchema.extend({
-  role: z.literal("buyer"),
+  role: z.literal("BUYER"),
   name: z.string().min(1, { message: "Company/Person name required" }),
   tin: z.string().min(5, { message: "TIN is required" }),
   phone: z.string().min(5, { message: "Phone is required" }),

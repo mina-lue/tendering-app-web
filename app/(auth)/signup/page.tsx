@@ -13,9 +13,9 @@ import { backend_url } from "@/lib/constants";
 type FormData = VendorSignup | BuyerSignup;
 
 export default function SignupPage() {
-  const [role, setRole] = useState<"vendor" | "buyer">("vendor");
+  const [role, setRole] = useState<"VENDOR" | "BUYER">("VENDOR");
 
-  const schema = role === "vendor" ? vendorSignupSchema : buyerSignupSchema;
+  const schema = role === "VENDOR" ? vendorSignupSchema : buyerSignupSchema;
   const {
     control,
     register,
@@ -58,7 +58,7 @@ export default function SignupPage() {
 
         {/* Role toggle */}
         <div className="flex mb-4">
-          {(["vendor", "buyer"] as const).map((r) => (
+          {(["VENDOR", "BUYER"] as const).map((r) => (
             <button
               key={r}
               type="button"
@@ -75,7 +75,7 @@ export default function SignupPage() {
         </div>
 
         {/* Role-specific fields */}
-        {role === "vendor" ? (
+        {role === "VENDOR" ? (
           <>
             {/* Name */}
             <input

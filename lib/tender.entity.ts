@@ -1,0 +1,17 @@
+export interface Tender {
+  id: number;
+
+  organizationId: number;
+  
+  details: string;
+
+  openAt: Date;
+
+  closeAt: Date;
+
+  document_buy_option: boolean;
+
+  urlToDoc?: string;
+
+  status: 'CLOSED' | 'OPEN' | 'DRAFT';
+}

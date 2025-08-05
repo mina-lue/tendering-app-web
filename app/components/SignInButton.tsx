@@ -2,6 +2,7 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
+import { CiSquarePlus } from "react-icons/ci";
 
 const SignInButton = () => {
   const { data: session } = useSession();
@@ -10,7 +11,9 @@ const SignInButton = () => {
   if (session && session.user)
     return (
       <div className="flex gap-4 ml-auto">
-      <Link href={'/tenders/new'} className="text-white font-bold"> post tender</Link>
+      <Link href={'/tenders/new'} className="text-white font-bold"> 
+        <CiSquarePlus  className="font-bold text-3xl text-white"/>
+      </Link>
         <Link href='/profile' className="text-sky-600">{session.user.name} </Link>
         <Link
           href={"/api/auth/signout"}

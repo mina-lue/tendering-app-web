@@ -115,7 +115,7 @@ export default function NewTenderPage() {
         },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Failed to create tender");
+      if (res.status !== 201) throw new Error("Failed to create tender");
       router.push("/tenders");
     } catch (error) {
       console.error(error);

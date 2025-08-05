@@ -30,7 +30,7 @@ export default function SigninPage() {
         console.error("Authentication error:", response.error);
         setAuthError("Incorrect email or password.");
       } else if (response?.ok) {
-        router.push('/listing');
+        router.push('/tenders');
       }
     } catch (error) {
       console.error("Sign in error:", error);

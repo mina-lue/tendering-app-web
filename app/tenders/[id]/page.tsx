@@ -62,7 +62,7 @@ const TenderDetails = () => {
                 </div>
             </div>
             <div className="p-5">
-                <p className="text-green-50 text-xl">the detail dof sdkfmfmlmflödmfvöldfv öld fvdölf, völdf, völd,v dölf,v ödv dölv, dlf, dlfv dlfmlkfaelrkoergmldkldfknglkdnf</p>
+                <p className="text-green-50 text-xl">{tender.details}</p>
             </div>
             <div className="mt-4 flex w-full justify-center">
                 <div className="w-fit right-0 flex gap-3">

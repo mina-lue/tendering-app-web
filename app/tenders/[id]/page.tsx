@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from 'react'
 import { useParams } from "next/navigation";
 import { Tender } from "@/lib/tender.entity";
+import PaymentPage from "@/app/components/PaymentPage";
 
 const TenderDetails = () => {
     const { data: session } = useSession();
@@ -70,6 +71,8 @@ const TenderDetails = () => {
                     <button className="bg-[#34825A] py-2 px-4 right-0 rounded-sm hover:text-green-500">Submit a bid</button>
                 </div>
             </div>
+
+          <PaymentPage /> 
         </div>
     )}
     else {

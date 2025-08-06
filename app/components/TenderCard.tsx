@@ -48,7 +48,7 @@ const TenderCard = ( props : {tender: Tender} ) => {
 
 
     return (
-        <div className='bg-green-900 w-full rounded-sm shadow-sm p-2 mb-4 hover:bg-green-800'>
+        <div className='bg-emerald-900 w-full rounded-sm shadow-sm p-2 mb-4 hover:bg-green-900'>
             <div className='flex justify-between items-center'>
                 <div className="flex items-center gap-1 ml-2">
                     <FaBuilding className="text-green-500"/>

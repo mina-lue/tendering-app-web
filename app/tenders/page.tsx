@@ -10,7 +10,7 @@ const ListingPage = () => {
   const { data: session } = useSession();
   const [tenders, setTenders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<null | string>(null);
 
   useEffect(()=>{
     if (!session?.backendTokens?.accessToken) {

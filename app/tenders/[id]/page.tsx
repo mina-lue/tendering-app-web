@@ -53,7 +53,7 @@ const TenderDetails = () => {
 
     if (session && session.user && tender)
     { return (
-        <div className="bg-[#164B30] p-4 mx-4 min-h-screen rounded-md">
+        <div className="bg-[#164B30] p-4 mx-4 min-h-200 rounded-md">
             <div className="flex justify-between">
                 <p className="text-3xl ml-4 text-green-50 pt-4">{session?.user.name}</p>
                 <div className="mt-4 rounded">

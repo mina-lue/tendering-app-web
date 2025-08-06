@@ -127,11 +127,10 @@ export default function NewTenderPage() {
     <FormProvider {...methods}>
       <div
         className="min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: "#0C3C00" }}
       >
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-4"
+          className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-4 text-green-950"
         >
           <h1 className="text-2xl font-bold">New Tender</h1>
 

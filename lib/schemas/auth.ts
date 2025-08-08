@@ -1,40 +1,36 @@
 import { z } from "zod";
 
-// Vendor schema
-export const vendorSignupSchema = z.object({
+const baseSignupSchema = z
+  .object({
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export const vendorSignupSchema = baseSignupSchema.extend({
   role: z.literal("VENDOR"),
-  name: z.string().min(1, "Name is required"),
-  sex: z.enum(["male", "female", "other"]),
-  phone: z.string().min(1, "Phone is required"),
-  email: z.string().email("Invalid email"),
-  password: z.string().min(8, "Password must be at least 8 chars"),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords must match",
-  path: ["confirmPassword"],
+  name: z.string().min(1, { message: "Name is required" }),
+  sex: z.enum(["male", "female", "other"], {
+    message: "Please select sex",
+}),
+  phone: z.string().min(5, { message: "Phone is required" }),
 });
 
-// Buyer schema
-export const buyerSignupSchema = z.object({
+export const buyerSignupSchema = baseSignupSchema.extend({
   role: z.literal("BUYER"),
-  name: z.string().min(1, "Company or person name is required"),
-  tin: z.string().min(1, "TIN is required"),
-  phone: z.string().min(1, "Phone is required"),
-  email: z.string().email("Invalid email"),
-  password: z.string().min(8, "Password must be at least 8 chars"),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords must match",
-  path: ["confirmPassword"],
+  name: z.string().min(1, { message: "Company/Person name required" }),
+  tin: z.string().min(5, { message: "TIN is required" }),
+  phone: z.string().min(5, { message: "Phone is required" }),
 });
 
-// Discriminated union
-export const signupSchema = z.discriminatedUnion("role", [
-  vendorSignupSchema,
-  buyerSignupSchema,
-]);
-
-export type SignupForm = z.infer<typeof signupSchema>;
+export type VendorSignup = z.infer<typeof vendorSignupSchema>;
+export type BuyerSignup = z.infer<typeof buyerSignupSchema>;
 
 export const signinSchema = z.object({
   email: z.string().email(),

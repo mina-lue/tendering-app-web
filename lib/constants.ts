@@ -1,1 +1,1 @@
-export const backend_url = "http://localhost:7000";
+export const backend_url = process.env.NEXT_PUBLIC_SERVICE_URL

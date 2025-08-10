@@ -1,7 +1,9 @@
-import Image from "next/image";
+import SubscribePage from "./components/SubscripePage";
 
 export default function Home() {
   return (
-   <div></div>
+   <div>
+    <SubscribePage />
+   </div>
   );
 }

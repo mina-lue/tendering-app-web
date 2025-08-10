@@ -64,7 +64,6 @@ const TenderCard = ( props : {tender: Tender} ) => {
             </p>
             <div className='flex justify-between items-center'>
                 <p></p>
-                
                     <Link href={`tenders/${props.tender.id}`} className="text-green-600 text-md hover:text-green-100">See details</Link>
                 </div>
         </div>

@@ -2,6 +2,7 @@
 import { backend_url } from "@/lib/constants";
 import { User } from "@/lib/user.entity";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaBuilding } from "react-icons/fa";
 import { FaRegFileLines } from "react-icons/fa6";
@@ -14,6 +15,7 @@ const Approval = () => {
   const [buyer, setBuyer] = useState<User>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchBuyers = async () => {
@@ -44,6 +46,51 @@ const Approval = () => {
 
     fetchBuyers();
   }, [session]);
+
+    async function approveBuyer(email: string) {
+         try {
+        const res = await fetch(`${backend_url}/api/users/approve/${email}`, {
+          method: "PATCH",
+          headers: {
+            authorization: `Bearer ${session?.backendTokens.accessToken}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(`Failed to approve buyer: ${res.statusText}`);
+        }
+
+        
+        router.push('/admin')
+      } catch (e: any) {
+        console.error(e);
+        setError("Error fetching buyers to approve. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    async function deleteBuyer(email: string) {
+         try {
+        const res = await fetch(`${backend_url}/api/users/delete/${email}`, {
+          method: "DELETE",
+          headers: {
+            authorization: `Bearer ${session?.backendTokens.accessToken}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(`Failed to delete buyer: ${res.statusText}`);
+        }
+
+        router.push('/admin')
+      } catch (e: any) {
+        console.error(e);
+        setError("Error fetching buyers to approve. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    }
 
   return (
     <div className="flex w-full gap-5">
@@ -93,11 +140,11 @@ const Approval = () => {
           <div className="mt-4 flex gap-4">
             <div className="flex items-center gap-1 cursor-pointer">
               <TiTick className="text-blue-500 text-xl" />
-              <p className="text-blue-500">Approve</p>
+              <p className="text-blue-500" onClick={() => approveBuyer(buyer.email)} >Approve</p>
             </div>
             <div className="flex items-center gap-1 cursor-pointer">
               <MdDelete className="text-red-500 text-xl" />
-              <p className="text-red-500">Delete</p>
+              <p className="text-red-500" onClick={() => deleteBuyer(buyer.email)}>Delete</p>
             </div>
           </div>
         </div>

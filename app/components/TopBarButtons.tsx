@@ -16,7 +16,11 @@ const TopBarButtons = () => {
             <CiSquarePlus className="font-bold text-3xl text-white" />
           </Link>
         )}
-
+        {session.user.role === "ADMIN" && (
+          <Link href={"/admin"} className="text-white font-bold">
+            <p>Dashboard</p>
+          </Link>
+        )}
         <Link href="/profile" className="text-sky-600">
           {session.user.name}{" "}
         </Link>

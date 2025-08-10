@@ -7,7 +7,7 @@ import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { canAccess } from "./lib/RoleBasedRoutes";
 
-const PUBLIC_ROUTES = [ "/signin", "/signup", "/api/auth", "/_next", "/favicon", "/public"];
+const PUBLIC_ROUTES = [ "/signin", "/signup", "/api/auth", "/_next", "/favicon", "/public", '/signout'];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

@@ -54,7 +54,8 @@ export const authOptions: NextAuthOptions = {
                     user: {
                         id: user.user.id,
                         email: user.user.email,
-                        name: user.user.name
+                        name: user.user.name,
+                        role: user.user.role
                     },
                     backendTokens: {
                         accessToken: user.backendTokens.accessToken,

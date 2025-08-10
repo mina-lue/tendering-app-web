@@ -7,6 +7,7 @@ declare module "next-auth" {
       id: string;
       email: string;
       name: string;
+      role: 'ADMIN' | 'BUYER' | 'VENDOR'
     } & DefaultSession["user"];
     backendTokens: {
       accessToken: string;
@@ -20,6 +21,7 @@ declare module "next-auth" {
       id: string;
       email: string;
       name: string;
+      role: 'ADMIN' | 'BUYER' | 'VENDOR'
     };
     backendTokens: {
       accessToken: string;
@@ -36,6 +38,7 @@ declare module "next-auth/jwt" {
       id: string;
       email: string;
       name: string;
+      role: 'ADMIN' | 'BUYER' | 'VENDOR'
     };
     backendTokens: {
       accessToken: string;

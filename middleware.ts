@@ -7,12 +7,12 @@ import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { canAccess } from "./lib/RoleBasedRoutes";
 
-const PUBLIC_ROUTES = ["/welcome", "/signin", "/signup", "/api/auth", "/_next", "/favicon", "/public"];
+const PUBLIC_ROUTES = [ "/signin", "/signup", "/api/auth", "/_next", "/favicon", "/public"];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const isPublic = PUBLIC_ROUTES.some((p) => pathname.startsWith(p));
-  const token = await getToken({ req }); // requires NEXTAUTH_SECRET set
+  const token = await getToken({ req });
   const isAuthed = !!token;
 
   // Landing logic
@@ -28,13 +28,13 @@ export async function middleware(req: NextRequest) {
   // Protect app routes
   if (!isAuthed) {
     const url = req.nextUrl.clone();
-    url.pathname = "/welcome";
+    url.pathname = "/not-allowed";
     url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
   }
 
   // Role checks (only for app pages you care about)
-  const role = (token.role || "VENDOR") as any;
+  const role = (token.user.role || "VENDOR") as any;
   if (!canAccess(role, pathname)) {
     const url = req.nextUrl.clone();
     url.pathname = "/tenders";

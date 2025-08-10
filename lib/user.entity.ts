@@ -11,5 +11,5 @@ export interface User {
 
   phone: string;
 
-  role: 'VENDOR' | 'BUYER';
+  role: 'VENDOR' | 'BUYER' | 'ADMIN';
 }

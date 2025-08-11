@@ -10,12 +10,13 @@ import {
 } from "@/lib/schemas/auth";
 import { backend_url } from "@/lib/constants";
 import { AiOutlineUpload } from "react-icons/ai";
+import { useRouter } from "next/navigation";
 
 type FormData = VendorSignup | BuyerSignup;
 
 export default function SignupPage() {
-  const [role, setRole] = useState<"VENDOR" | "BUYER">("VENDOR");
-
+  const [role, setRole] = useState<"VENDOR" | "BUYER" | "ADMIN">("VENDOR");
+  const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [fileName, setFileName] = useState<string | null>(null);
     const [urlToDoc, setUrlToDoc] = useState<string>('');
@@ -88,11 +89,16 @@ export default function SignupPage() {
 
     const updatePayload = {...payload, urlToDoc};
 
-    await fetch(`${backend_url}/api/auth/register`, {
+    const res = await fetch(`${backend_url}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatePayload),
     });
+
+    if(res.status !== 201){
+      throw new Error('Error creating user.')
+    }
+    router.push('/signin')
   };
 
   return (

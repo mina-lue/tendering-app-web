@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -9,11 +9,58 @@ import {
   BuyerSignup,
 } from "@/lib/schemas/auth";
 import { backend_url } from "@/lib/constants";
+import { AiOutlineUpload } from "react-icons/ai";
 
 type FormData = VendorSignup | BuyerSignup;
 
 export default function SignupPage() {
   const [role, setRole] = useState<"VENDOR" | "BUYER">("VENDOR");
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [fileName, setFileName] = useState<string | null>(null);
+    const [urlToDoc, setUrlToDoc] = useState<string | null>(null);
+    const [uploading, setUploading] = useState(false);
+
+
+    const handleFileClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setFileName(file.name);
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append(
+        "upload_preset",
+        process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!
+      );
+
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!res.ok) throw new Error("Upload failed");
+      const data = await res.json();
+      setUrlToDoc(data.secure_url);
+    } catch (err) {
+      console.error(err);
+      alert("Error uploading document");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const schema = role === "VENDOR" ? vendorSignupSchema : buyerSignupSchema;
   const {
@@ -38,10 +85,13 @@ export default function SignupPage() {
   const onSubmit = async (data: FormData) => {
     // strip out confirmPassword before sending
     const { confirmPassword, ...payload } = data as any;
+
+    const updatePayload = {...payload, urlToDoc};
+
     await fetch(`${backend_url}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(updatePayload),
     });
   };
 
@@ -134,12 +184,32 @@ export default function SignupPage() {
             )}
 
             {/* TIN */}
-            <input
-              type="text"
-              placeholder="TIN"
-              {...register("tin")}
-              className="w-full mb-4 p-2 border border-gray-300 rounded text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-700"
-            />
+            <div className="space-y-2 mb-3 text-green-950 ">
+                          <input
+                            type="file"
+                            accept="application/pdf,image/*"
+                            hidden
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                          />
+                          <button
+                            type="button"
+                            onClick={handleFileClick}
+                            className="flex items-center space-x-2 border rounded p-2 hover:bg-gray-100"
+                          >
+                            <AiOutlineUpload size={20} />
+                            <span>
+                              {uploading
+                                ? "Uploading..."
+                                : urlToDoc
+                                ? "Change Document"
+                                : "Upload Document"}
+                            </span>
+                          </button>
+                          {fileName && (
+                             <p className="text-sm text-gray-800">Selected file: <strong>{fileName}</strong></p>
+                          )}
+                        </div>
             {/* errors.tin && (
               <p className="text-red-600 text-sm">{errors.tin.message}</p>
             ) */}

@@ -18,7 +18,7 @@ export default function SignupPage() {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [fileName, setFileName] = useState<string | null>(null);
-    const [urlToDoc, setUrlToDoc] = useState<string | null>(null);
+    const [urlToDoc, setUrlToDoc] = useState<string>('');
     const [uploading, setUploading] = useState(false);
 
 

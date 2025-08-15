@@ -12,6 +12,9 @@ export interface Tender {
   document_buy_option: boolean;
 
   urlToDoc?: string;
+  documentPrice?: string;
 
   status: 'CLOSED' | 'OPEN' | 'DRAFT';
+
+  updatedAt: Date;
 }

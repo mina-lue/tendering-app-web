@@ -10,17 +10,14 @@ import { backend_url } from "@/lib/constants";
 import { AiOutlineUpload } from "react-icons/ai";
 
 // Zod schema for tender form (urlToDoc handled manually)
+
 const tenderSchema = z.object({
   details: z.string().min(10, "Details must be at least 10 characters"),
-  open_at: z
-    .string()
-    .refine((val) => !isNaN(Date.parse(val)), { message: "Invalid date" }),
-  close_at: z
-    .string()
-    .refine((val) => !isNaN(Date.parse(val)), { message: "Invalid date" }),
+  open_at: z.string().refine((v) => !isNaN(Date.parse(v)), { message: "Invalid date" }),
+  close_at: z.string().refine((v) => !isNaN(Date.parse(v)), { message: "Invalid date" }),
   document_buy_option: z.boolean(),
   status: z.enum(["OPEN", "CLOSED", "DRAFT"]),
-});
+})
 
 type TenderFormData = z.infer<typeof tenderSchema>;
 
@@ -42,6 +39,7 @@ export default function NewTenderPage() {
   const [fileName, setFileName] = useState<string | null>(null);
   const [urlToDoc, setUrlToDoc] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [documentPrice, setDocumentPrice] = useState<number | null>(null);
 
   const docOpt = watch("document_buy_option");
 
@@ -52,9 +50,7 @@ export default function NewTenderPage() {
     }
   };
 
-  const handleFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setFileName(file.name);
@@ -104,6 +100,9 @@ export default function NewTenderPage() {
       document_buy_option: data.document_buy_option,
       status: data.status,
       ...(data.document_buy_option ? { urlToDoc } : {}),
+      ...(data.document_buy_option
+        ? { documentPrice: `${documentPrice}` }
+        : {}),
     };
 
     try {
@@ -125,9 +124,7 @@ export default function NewTenderPage() {
 
   return (
     <FormProvider {...methods}>
-      <div
-        className="min-h-screen flex items-center justify-center"
-      >
+      <div className="min-h-screen flex items-center justify-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-4 text-green-950"
@@ -142,9 +139,7 @@ export default function NewTenderPage() {
               className="mt-1 block w-full border rounded p-2"
             />
             {errors.details && (
-              <p className="text-red-500 text-sm">
-                {errors.details.message}
-              </p>
+              <p className="text-red-500 text-sm">{errors.details.message}</p>
             )}
           </div>
 
@@ -157,9 +152,7 @@ export default function NewTenderPage() {
               className="mt-1 block w-full border rounded p-2"
             />
             {errors.open_at && (
-              <p className="text-red-500 text-sm">
-                {errors.open_at.message}
-              </p>
+              <p className="text-red-500 text-sm">{errors.open_at.message}</p>
             )}
           </div>
 
@@ -172,9 +165,7 @@ export default function NewTenderPage() {
               className="mt-1 block w-full border rounded p-2"
             />
             {errors.close_at && (
-              <p className="text-red-500 text-sm">
-                {errors.close_at.message}
-              </p>
+              <p className="text-red-500 text-sm">{errors.close_at.message}</p>
             )}
           </div>
 
@@ -184,31 +175,49 @@ export default function NewTenderPage() {
             <label className="text-sm">Document Buy Option</label>
           </div>
           {docOpt && (
-            <div className="space-y-2">
-              <input
-                type="file"
-                accept="application/pdf,image/*"
-                hidden
-                ref={fileInputRef}
-                onChange={handleFileChange}
-              />
-              <button
-                type="button"
-                onClick={handleFileClick}
-                className="flex items-center space-x-2 border rounded p-2 hover:bg-gray-100"
-              >
-                <AiOutlineUpload size={20} />
-                <span>
-                  {uploading
-                    ? "Uploading..."
-                    : urlToDoc
-                    ? "Change Document"
-                    : "Upload Document"}
-                </span>
-              </button>
-              {fileName && (
-                 <p className="text-sm text-gray-800">Selected file: <strong>{fileName}</strong></p>
-              )}
+            <div>
+              <div></div>
+              <div className="space-y-2">
+                <input
+                  type="file"
+                  accept="application/pdf,image/*"
+                  hidden
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                />
+                <button
+                  type="button"
+                  onClick={handleFileClick}
+                  className="flex items-center space-x-2 border rounded p-2 hover:bg-gray-100"
+                >
+                  <AiOutlineUpload size={20} />
+                  <span>
+                    {uploading
+                      ? "Uploading..."
+                      : urlToDoc
+                      ? "Change Document"
+                      : "Upload Document"}
+                  </span>
+                </button>
+                {fileName && (
+                  <p className="text-sm text-gray-800">
+                    Selected file: <strong>{fileName}</strong>
+                  </p>
+                )}
+              </div>
+
+              <div className="mt-3">
+                <label className="text-sm text-gray-800">Document Price</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="Document Price"
+                  value={documentPrice ?? ""}
+                  onChange={(e) => setDocumentPrice(parseFloat(e.target.value))}
+                  className="mt-1 block w-full border rounded p-2"
+                />
+              </div>
             </div>
           )}
 
@@ -224,9 +233,7 @@ export default function NewTenderPage() {
               <option value="DRAFT">Draft</option>
             </select>
             {errors.status && (
-              <p className="text-red-500 text-sm">
-                {errors.status.message}
-              </p>
+              <p className="text-red-500 text-sm">{errors.status.message}</p>
             )}
           </div>
 

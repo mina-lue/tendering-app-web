@@ -2,6 +2,7 @@
 import { backend_url } from "@/lib/constants";
 import { User } from "@/lib/user.entity";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaBuilding } from "react-icons/fa";
@@ -47,50 +48,49 @@ const Approval = () => {
     fetchBuyers();
   }, [session]);
 
-    async function approveBuyer(email: string) {
-         try {
-        const res = await fetch(`${backend_url}/api/users/approve/${email}`, {
-          method: "PATCH",
-          headers: {
-            authorization: `Bearer ${session?.backendTokens.accessToken}`,
-          },
-        });
+  async function approveBuyer(email: string) {
+    try {
+      const res = await fetch(`${backend_url}/api/users/approve/${email}`, {
+        method: "PATCH",
+        headers: {
+          authorization: `Bearer ${session?.backendTokens.accessToken}`,
+        },
+      });
 
-        if (!res.ok) {
-          throw new Error(`Failed to approve buyer: ${res.statusText}`);
-        }
-
-        
-        router.push('/admin')
-      } catch (e: any) {
-        console.error(e);
-        setError("Error fetching buyers to approve. Please try again later.");
-      } finally {
-        setLoading(false);
+      if (!res.ok) {
+        throw new Error(`Failed to approve buyer: ${res.statusText}`);
       }
+
+      router.push("/admin");
+    } catch (e: any) {
+      console.error(e);
+      setError("Error fetching buyers to approve. Please try again later.");
+    } finally {
+      setLoading(false);
     }
+  }
 
-    async function deleteBuyer(email: string) {
-         try {
-        const res = await fetch(`${backend_url}/api/users/delete/${email}`, {
-          method: "DELETE",
-          headers: {
-            authorization: `Bearer ${session?.backendTokens.accessToken}`,
-          },
-        });
+  async function deleteBuyer(email: string) {
+    try {
+      const res = await fetch(`${backend_url}/api/users/delete/${email}`, {
+        method: "DELETE",
+        headers: {
+          authorization: `Bearer ${session?.backendTokens.accessToken}`,
+        },
+      });
 
-        if (!res.ok) {
-          throw new Error(`Failed to delete buyer: ${res.statusText}`);
-        }
-
-        router.push('/admin')
-      } catch (e: any) {
-        console.error(e);
-        setError("Error fetching buyers to approve. Please try again later.");
-      } finally {
-        setLoading(false);
+      if (!res.ok) {
+        throw new Error(`Failed to delete buyer: ${res.statusText}`);
       }
+
+      router.push("/admin");
+    } catch (e: any) {
+      console.error(e);
+      setError("Error fetching buyers to approve. Please try again later.");
+    } finally {
+      setLoading(false);
     }
+  }
 
   return (
     <div className="flex w-full gap-5">
@@ -101,8 +101,9 @@ const Approval = () => {
 
         <div className="m-2">
           {buyersToApprove?.map((buyer) => (
-            <div className="bg-gradient-to-t from-green-800 to-green-900 py-1 text-center hover:from-green-900 hover:to-green-950 cursor-pointer mb-1"
-            onClick={()=> setBuyer(buyer)}
+            <div
+              className="bg-gradient-to-t from-green-800 to-green-900 py-1 text-center hover:from-green-900 hover:to-green-950 cursor-pointer mb-1"
+              onClick={() => setBuyer(buyer)}
             >
               <p>{buyer.name}</p>
             </div>
@@ -110,46 +111,57 @@ const Approval = () => {
         </div>
       </div>
 
-      {
-        (buyer) &&
-          (<div className="w-3/5 flex justify-center items-center">
-        <div className="m-2 flex-col justify-center">
-          <div className="flex items-center gap-2 text-3xl">
-            <FaBuilding className="text-green-500 text-3xl" />
-            <h2>{buyer.name}</h2>
-          </div>
-          <div className="mt-4">
-            <div className="flex items-center gap-2">
-              <TiPhone className="text-green-500 text-xl" />
-              <p>{buyer.phone}</p>
+      {buyer && (
+        <div className="w-3/5 flex justify-center items-center">
+          <div className="m-2 flex-col justify-center">
+            <div className="flex items-center gap-2 text-3xl">
+              <FaBuilding className="text-green-500 text-3xl" />
+              <h2>{buyer.name}</h2>
             </div>
-          </div>
-          <div className="mt-4">
-            <div className="flex items-center gap-2">
-              <MdEmail className="text-green-500 text-xl" />
-              <p>{buyer.email}</p>
+            <div className="mt-4">
+              <div className="flex items-center gap-2">
+                <TiPhone className="text-green-500 text-xl" />
+                <p>{buyer.phone}</p>
+              </div>
             </div>
-          </div>
-          <div className="mt-4">
-            <div className="flex items-center gap-2">
-              <FaRegFileLines className="text-green-500 text-xl" />
-              <p>{buyer.urlToDoc}</p>
+            <div className="mt-4">
+              <div className="flex items-center gap-2">
+                <MdEmail className="text-green-500 text-xl" />
+                <p>{buyer.email}</p>
+              </div>
             </div>
-          </div>
+            {buyer.urlToDoc && (
+              <div className="mt-4">
+                <div className="flex items-center gap-2">
+                  <FaRegFileLines className="text-green-500 text-xl" />
+                  <Link href={buyer.urlToDoc}>see document</Link>
+                </div>
+              </div>
+            )}
 
-          <div className="mt-4 flex gap-4">
-            <div className="flex items-center gap-1 cursor-pointer">
-              <TiTick className="text-blue-500 text-xl" />
-              <p className="text-blue-500" onClick={() => approveBuyer(buyer.email)} >Approve</p>
-            </div>
-            <div className="flex items-center gap-1 cursor-pointer">
-              <MdDelete className="text-red-500 text-xl" />
-              <p className="text-red-500" onClick={() => deleteBuyer(buyer.email)}>Delete</p>
+            <div className="mt-4 flex gap-4">
+              <div className="flex items-center gap-1 cursor-pointer">
+                <TiTick className="text-blue-500 text-xl" />
+                <p
+                  className="text-blue-500"
+                  onClick={() => approveBuyer(buyer.email)}
+                >
+                  Approve
+                </p>
+              </div>
+              <div className="flex items-center gap-1 cursor-pointer">
+                <MdDelete className="text-red-500 text-xl" />
+                <p
+                  className="text-red-500"
+                  onClick={() => deleteBuyer(buyer.email)}
+                >
+                  Delete
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>)
-      }
+      )}
     </div>
   );
 };

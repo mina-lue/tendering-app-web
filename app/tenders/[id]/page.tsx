@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from 'react'
 import { useParams } from "next/navigation";
 import { Tender } from "@/lib/tender.entity";
+import PayForDocButton from "@/app/components/PayForDocButton";
 
 const TenderDetails = () => {
     const { data: session } = useSession();
@@ -53,7 +54,7 @@ const TenderDetails = () => {
 
     if (session && session.user && tender)
     { return (
-        <div className="bg-[#164B30] p-4 mx-4 min-h-200 rounded-md">
+        <div className="bg-[#164B30] p-4 mx-2  min-h-200 rounded-md">
             <div className="flex justify-between">
                 <p className="text-3xl ml-4 text-green-50 pt-4">{session?.user.name}</p>
                 <div className="mt-4 rounded">
@@ -66,8 +67,8 @@ const TenderDetails = () => {
             </div>
             <div className="mt-4 flex w-full justify-center">
                 <div className="w-fit right-0 flex gap-3">
-                    {tender.document_buy_option && <button className="bg-[#34825A] py-2 px-4 right-0 rounded-sm hover:text-green-500">Buy Document</button>}
-                    <button className="bg-[#34825A] py-2 px-4 right-0 rounded-sm hover:text-green-500">Submit a bid</button>
+                    {tender.document_buy_option && tender.documentPrice && <PayForDocButton  amount={tender.documentPrice} />}
+                    
                 </div>
             </div>
         </div>

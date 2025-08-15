@@ -11,7 +11,7 @@ const TopBarButtons = () => {
   if (session && session.user)
     return (
       <div className="flex gap-4 ml-auto">
-        {session.user.role !== "VENDOR" && (
+        {session.user.role == "BUYER" && (
           <Link href={"/tenders/new"} className="text-white font-bold">
             <CiSquarePlus className="font-bold text-3xl text-white" />
           </Link>

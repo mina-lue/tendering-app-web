@@ -7,8 +7,7 @@ export function canAccess(role: 'ADMIN' | 'BUYER' | 'VENDOR', pathname: string) 
     return (
       pathname === "/tenders" ||
       (pathname.startsWith("/tenders/") && pathname !== "/tenders/new" ) || 
-      pathname === "/profile" ||
-      pathname.startsWith("/admin") // todo delete it
+      pathname === "/profile"
     );
   }
 

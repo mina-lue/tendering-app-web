@@ -87,7 +87,7 @@ export default function SignupPage() {
     // strip out confirmPassword before sending
     const { confirmPassword, ...payload } = data as any;
 
-    const updatePayload = {...payload, urlToDoc};
+    const updatePayload = {...payload, urlToDoc, ...{approved :true}};
 
     const res = await fetch(`${backend_url}/api/auth/register`, {
       method: "POST",

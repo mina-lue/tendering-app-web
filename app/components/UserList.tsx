@@ -22,7 +22,7 @@ const UserList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
 
-  const blockUser = async (id: string) => {
+  const blockUser = async (id: number) => {
     if (!session?.backendTokens?.accessToken) return;
 
     try {
@@ -41,6 +41,28 @@ const UserList = () => {
     } catch (e: any) {
       console.error(e);
       setError("Error blocking user. Please try again later.");
+    }
+  };
+
+  const deleteUser = async (id : number) => {
+    if (!session?.backendTokens?.accessToken) return;
+
+    try {
+      const res = await fetch(`${backend_url}/api/users/${id}`, {
+        method: "DELETE",
+        headers: {
+          authorization: `Bearer ${session.backendTokens.accessToken}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to delete user: ${res.statusText}`);
+      }
+
+      setUsers((prev) => prev.filter((user) => user.id !== id));
+    } catch (e: any) {
+      console.error(e);
+      setError("Error deleting user. Please try again later.");
     }
   };
 
@@ -79,11 +101,6 @@ const UserList = () => {
       fetchTenders();
     }, [session]);
 
-
-
-    function deleteUser(id: string) {
-        throw new Error('Function not implemented.');
-    }
 
   return (
     <article className={cn("rounded-xl p-4 mx-2")}>
@@ -132,7 +149,7 @@ const UserList = () => {
               </TableCell>
               <TableCell>
               <div className="flex justify-end w-full">
-                <MdDelete className='text-2xl text-orange-800' onClick={() => {deleteUser(id)}} />
+                <MdDelete className='text-2xl text-orange-800 cursor-pointer' onClick={() => {deleteUser(id)}} />
               </div>
               </TableCell> 
             </TableRow>

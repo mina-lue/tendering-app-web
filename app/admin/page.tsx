@@ -1,6 +1,7 @@
 import React from 'react'
 import Approval from '../components/Approval'
 import UserList from '../components/UserList'
+import TenderListAdmin from '../components/TenderListAdmin'
 
 const Dashboard = () => {
   return (
@@ -15,7 +16,7 @@ const Dashboard = () => {
         </div>
         <div className='bg-[#164B30] h-200 w-4/5 rounded-sm'>
             <div>
-              <UserList />
+              <TenderListAdmin />
             </div>
         </div>
     </div>

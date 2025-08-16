@@ -13,3 +13,11 @@ export interface User {
 
   role: 'VENDOR' | 'BUYER' | 'ADMIN';
 }
+
+export interface UserResponse {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: 'VENDOR' | 'BUYER' | 'ADMIN';
+}

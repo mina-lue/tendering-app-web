@@ -13,14 +13,36 @@ import { cn } from '@/lib/utils';
 import { useSession } from 'next-auth/react';
 import { backend_url } from '@/lib/constants';
 import { MdDelete } from 'react-icons/md';
+import { UserResponse } from '@/lib/user.entity';
 
 const UserList = () => {
 
   const { data: session } = useSession();
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<UserResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
 
+  const blockUser = async (id: string) => {
+    if (!session?.backendTokens?.accessToken) return;
+
+    try {
+      const res = await fetch(`${backend_url}/api/users/block/${id}`, {
+        method: "POST",
+        headers: {
+          authorization: `Bearer ${session.backendTokens.accessToken}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to block user: ${res.statusText}`);
+      }
+
+      setUsers((prev) => prev.filter((user) => user.id !== id));
+    } catch (e: any) {
+      console.error(e);
+      setError("Error blocking user. Please try again later.");
+    }
+  };
 
   useEffect(()=>{
       if (!session?.backendTokens?.accessToken) {
@@ -58,6 +80,10 @@ const UserList = () => {
     }, [session]);
 
 
+
+    function deleteUser(id: string) {
+        throw new Error('Function not implemented.');
+    }
 
   return (
     <article className={cn("rounded-xl p-4 mx-2")}>
@@ -101,12 +127,12 @@ const UserList = () => {
               </TableCell>
               <TableCell>
                 <div className="flex items-center justify-end">
-                <p className='p-1 px-2 bg-amber-700 rounded-xl cursor-pointer' onClick={() => {}}>block</p>
+                <p className='p-1 px-2 bg-amber-700 rounded-xl cursor-pointer' onClick={() => {blockUser(id)}}>block</p>
                 </div>
               </TableCell>
               <TableCell>
               <div className="flex justify-end w-full">
-                <MdDelete className='text-2xl text-orange-800'/>
+                <MdDelete className='text-2xl text-orange-800' onClick={() => {deleteUser(id)}} />
               </div>
               </TableCell> 
             </TableRow>

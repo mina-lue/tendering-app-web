@@ -94,12 +94,12 @@ const Approval = () => {
 
   return (
     <div className="flex w-full gap-5">
-      <div className="w-1/5 bg-[#22734B] rounded-md h-160">
+      <div className="w-1/5 bg-[#195839] rounded-md h-200">
         <div className="text-center rounded-t-md bg-[#003C24] py-2 text-xl">
           Select Buyer
         </div>
 
-        <div className="m-2">
+        <div className="m-1">
           {buyersToApprove?.map((buyer) => (
             <div
               className="bg-gradient-to-t from-green-800 to-green-900 py-1 text-center hover:from-green-900 hover:to-green-950 cursor-pointer mb-1"

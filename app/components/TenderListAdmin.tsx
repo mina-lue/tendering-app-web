@@ -13,6 +13,7 @@ import { useSession } from 'next-auth/react';
 import { backend_url } from '@/lib/constants';
 import { MdDelete } from 'react-icons/md';
 import { TenderResponsesForAdmin } from '@/lib/tender.entity';
+import { useRouter } from 'next/navigation';
 
 const TenderListAdmin = () => {
 
@@ -20,9 +21,28 @@ const TenderListAdmin = () => {
   const [tenders, setTenders] = useState<TenderResponsesForAdmin[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | string>(null);
+  const router = useRouter();
 
   const deleteTender = async (id : number) => {
+     if (!session?.backendTokens?.accessToken) return;
     
+        try {
+          const res = await fetch(`${backend_url}/api/tenders/${id}`, {
+            method: "DELETE",
+            headers: {
+              authorization: `Bearer ${session.backendTokens.accessToken}`,
+            },
+          });
+    
+          if (!res.ok) {
+            throw new Error(`Failed to delete tender: ${res.statusText}`);
+          }
+    
+          setTenders((prev) => prev.filter((tender) => tender.id !== id));
+        } catch (e: any) {
+          console.error(e);
+          setError("Error deleting tender. Please try again later.");
+        }
   };
 
   useEffect(()=>{
@@ -83,11 +103,12 @@ const TenderListAdmin = () => {
                       <p className="text-xl">{organization.name}</p>
                   </div>
               </TableCell>
-             <TableCell>
-              <div className="overflow-hidden">
+             <TableCell
+             onClick={() => router.push(`/tenders/${id}`)}
+             >
+              <div className="overflow-hidden cursor-pointer">
                 {details}
               </div>
-              
               </TableCell> 
               <TableCell>
                 <div className="flex items-center justify-end">

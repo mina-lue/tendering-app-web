@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from "next/navigation";
 import { Tender } from "@/lib/tender.entity";
 import PayForDocButton from "@/app/components/PayForDocButton";
+import { MdOutlineBackspace } from "react-icons/md";
 
 const TenderDetails = () => {
     const { data: session } = useSession();
@@ -55,6 +56,9 @@ const TenderDetails = () => {
     if (session && session.user && tender)
     { return (
         <div className="bg-[#164B30] p-4 mx-2  min-h-200 rounded-md">
+          <div className="float-right mb-8">
+            <MdOutlineBackspace className="text-red-800 text-2xl mb-4"/>
+          </div>
             <div className="flex justify-between">
                 <p className="text-3xl ml-4 text-green-50 pt-4">{session?.user.name}</p>
                 <div className="mt-4 rounded">

@@ -84,7 +84,7 @@ const TenderCard = ( props : {tender: Tender} ) => {
   }, [props.tender.updatedAt]);
 
     return (
-        <div className='bg-emerald-900 w-full rounded-sm shadow-sm p-2 mb-4 hover:bg-emerald-800'>
+        <div className='bg-[#164B30] w-full rounded-sm shadow-sm p-2 mb-2 hover:bg-[#22734B]'>
             <div className='flex justify-between items-center'>
                 <div className="flex items-center gap-1 ml-2">
                     <FaBuilding className="text-green-500"/>

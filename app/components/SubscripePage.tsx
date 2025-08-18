@@ -2,6 +2,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { LuPackage } from "react-icons/lu";
 
 // If you already have a backend base URL, you can use it here instead of API routes
 // import { backend_url } from "@/lib/constants";
@@ -128,104 +129,82 @@ export default function SubscribePage() {
         )}
 
         <div className="grid gap-6 md:grid-cols-3 text-green-800">
-          {plans.map((p) => (
-            <div key={p.id} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-200 flex flex-col">
+            <div className="rounded-2xl p-6 shadow-sm ring-1 ring-gray-00 flex flex-col bg-gray-200">
               <div className="flex-1 justify-center text-center">
-                <h2 className="text-xl font-bold">{p.title}</h2>
-                <p className="mt-1 text-2xl font-bold">{p.price}</p>
-                <p className="mt-2 text-gray-600">{p.description}</p>
+                <h2 className="text-xl font-bold">Free Trial</h2>
+                <p className="mt-2 text-gray-600">Try our service for free for 14 days.</p>
 
-                <ul className="mt-4 space-y-2 text-sm text-gray-700">
-                  {p.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2">
-                      <span className="mt-1 inline-block h-2 w-2 rounded-full bg-gray-900" />
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="flex items-center justify-center mt-2 mx-4">
+                <div className="h-60 w-60 rounded-full bg-gray-300 flex items-center justify-center shadow-gay-400 shadow-xl">
+                <p className="text-5xl font-bold">ETB 0.00</p>
+                </div>
               </div>
 
-              {p.id === "FREE_TRIAL" ? (
+              </div>
                 <button
                   onClick={handleStartTrial}
                   disabled={loadingPlan !== null}
-                  className="mt-6 inline-flex items-center justify-center rounded-2xl border border-gray-900 bg-gray-900 px-4 py-2.5 text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+                  className="mt-6 text-2xl inline-flex items-center justify-center rounded-2xl  bg-gray-300 px-4 py-2.5 shadow-gay-400 shadow-lg transition hover:bg-green-800 hover:text-zinc-100 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
                 >
-                  {loadingPlan === "FREE_TRIAL" ? "Starting…" : p.cta}
+                  Subscribe
                 </button>
-              ) : (
-                <button
-                  onClick={() => handlePay(p.id)}
-                  disabled={loadingPlan !== null}
-                  className="mt-6 inline-flex items-center justify-center rounded-2xl border border-gray-900 bg-white px-4 py-2.5 text-gray-900 transition hover:bg-green-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
-                >
-                  {loadingPlan === p.id ? "Redirecting…" : p.cta}
-                </button>
-              )}
             </div>
-          ))}
+
+
+             <div className="rounded-2xl bg-emerald-800 p-6 ring-1 ring-green-800 flex flex-col h-120 shadow-green-800 shadow-2xl">
+              <div className="flex-1 justify-center text-center">
+                <h2 className="text-xl font-bold text-gray-200">Monthly Pack</h2>
+                <p className="mt-2  text-gray-200">Monthly Recurring Subscription</p>
+
+              <div className="flex items-center justify-center mt-2 mx-4">
+                <div className="h-60 w-60 rounded-full bg-emerald-900 flex items-center justify-center shadow-emerald-950 shadow-xl">
+                <p className="text-5xl text-gray-200 font-bold">ETB 14</p>
+                </div>
+              </div>
+
+              </div>
+
+                <button
+                  disabled={loadingPlan !== null}
+                  className="mt-6 text-2xl text-zinc-200 inline-flex items-center justify-center rounded-2xl bg-emerald-900 shadow-emerald-950 shadow-lg px-4 py-2.5 transition hover:bg-green-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+                >
+                  { 
+                    loadingPlan ? "Redirecting…" : 'Subscribe'
+                  }
+                </button>
+            </div>
+
+
+             <div className="rounded-2xl bg-amber-600 p-6 ring-1 ring-gold-200 flex flex-col h-120 shadow-amber-800 shadow-2xl">
+              <div className="flex-1 justify-center text-center">
+                <h2 className="text-2xl font-semibold">Yearly pack</h2>
+                <p className="mt-2 text-gray-300 text-md ">Enjoy discounted yearly subscription</p>
+
+              <div className="flex items-center justify-center mt-2 mx-4">
+                <div className="h-60 w-60 rounded-full bg-amber-700 flex items-center justify-center shadow-amber-800 shadow-xl">
+                <p className="text-5xl text-white font-bold">ETB 140</p>
+                </div>
+              </div>
+
+              </div>
+
+                <button
+                  disabled={loadingPlan !== null}
+                  className="mt-6 text-2xl font-semibold text-zinc-200 inline-flex items-center justify-center rounded-2xl bg-amber-700 px-4 py-2.5 shadow-amber-800 shadow-md transition hover:bg-green-800 hover:text-white disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+                >
+                  { 
+                  loadingPlan ? "Redirecting…" : 'Subscribe'
+                  }
+                </button>
+            </div>
         </div>
 
-        <p className="mt-6 text-center text-xs text-gray-200">* Depending on your payment setup, some regions/providers may still ask for verification.</p>
+        <p className="mt-6 text-center text-xs text-gray-200">Thanks for choosing us.</p>
       </div>
     </div>
   );
 }
 
-// ------------------------------
-// OPTIONAL: Example API routes (App Router)
-// These are minimal stubs you can adapt to your backend/Telebirr flow.
-// Place them under app/api/subscription/*
-// ------------------------------
 
-/*
-// File: app/api/subscription/start-trial/route.ts
-import { NextResponse } from "next/server";
-// import { getServerSession } from "next-auth";
-// import { db } from "@/lib/db"; // your Prisma or DB util
 
-export async function POST() {
-  try {
-    // const session = await getServerSession(authOptions);
-    // if (!session?.user?.id) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
-    // 1) Mark user as on-trial in your DB with 30-day expiry
-    // await db.subscription.upsert({
-    //   where: { userId: session.user.id },
-    //   create: { userId: session.user.id, status: "TRIAL", trialEndsAt: addDays(new Date(), 30) },
-    //   update: { status: "TRIAL", trialEndsAt: addDays(new Date(), 30) },
-    // });
-
-    return NextResponse.json({ ok: true });
-  } catch (e: any) {
-    return NextResponse.json({ message: e.message || "Failed to start trial" }, { status: 500 });
-  }
-}
-*/
-
-/*
-// File: app/api/subscription/create-payment/route.ts
-import { NextRequest, NextResponse } from "next/server";
-
-export async function POST(req: NextRequest) {
-  try {
-    const { plan, amount, currency, provider } = await req.json();
-
-    if (!amount || !plan) {
-      return NextResponse.json({ message: "Invalid request" }, { status: 400 });
-    }
-
-    // TODO: Create payment on your backend (Telebirr integrate here)
-    // - generate payment URL from Telebirr
-    // - persist a pending Subscription/Invoice row
-    // - return a URL to redirect the user
-
-    // For now, return a placeholder URL (replace with real Telebirr URL you get back)
-    const paymentUrl = `https://example.com/pay?plan=${plan}&amount=${amount}&currency=${currency || "ETB"}`;
-
-    return NextResponse.json({ paymentUrl });
-  } catch (e: any) {
-    return NextResponse.json({ message: e.message || "Failed to create payment" }, { status: 500 });
-  }
-}
-*/

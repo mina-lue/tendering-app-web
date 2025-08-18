@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import { CiSquarePlus } from "react-icons/ci";
+import { FaUserCircle } from "react-icons/fa";
 
 const TopBarButtons = () => {
   const { data: session } = useSession();
@@ -21,15 +22,22 @@ const TopBarButtons = () => {
             <p>Dashboard</p>
           </Link>
         )}
-        <Link href="/profile" className="text-sky-600">
-          {session.user.name}{" "}
-        </Link>
-        <Link
-          href={"/api/auth/signout"}
-          className="flex gap-4 ml-auto text-red-600"
-        >
-          Sign Out
-        </Link>
+<Link href="/profile" className="text-sky-600">
+{session.user.name}{" "}
+</Link>
+<Link
+href={"/api/auth/signout"}
+className="flex gap-4 ml-auto text-red-600"
+>
+Sign Out
+</Link>
+
+        { /*
+        
+        <FaUserCircle className="flex items-center text-2xl"/>
+          */
+        }
+        
       </div>
     );
 

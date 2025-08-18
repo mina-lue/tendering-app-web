@@ -13,7 +13,7 @@ import { TiPhone, TiTick } from "react-icons/ti";
 const Approval = () => {
   const { data: session } = useSession();
   const [buyersToApprove, setBuyersToApprove] = useState<User[] | undefined>();
-  const [buyer, setBuyer] = useState<User>();
+  const [selectedBuyer, setSelectedBuyer] = useState<User>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -95,15 +95,16 @@ const Approval = () => {
   return (
     <div className="flex w-full gap-5">
       <div className="w-1/5 bg-[#195839] rounded-md h-200">
-        <div className="text-center rounded-t-md bg-[#003C24] py-2 text-xl">
+        <div className="text-center bg-[#003C24] py-2 text-xl">
           Select Buyer
         </div>
 
         <div className="m-1">
           {buyersToApprove?.map((buyer) => (
             <div
-              className="bg-gradient-to-t from-green-800 to-green-900 py-1 text-center hover:from-green-900 hover:to-green-950 cursor-pointer mb-1"
-              onClick={() => setBuyer(buyer)}
+              className={"bg-gradient-to-t from-green-800 to-green-900 py-1 text-center hover:from-green-900 hover:to-green-950 cursor-pointer mb-1"+ (buyer.email === selectedBuyer?.email ? ' from-green-900 to-green-950' : '')}
+              onClick={() => setSelectedBuyer(buyer)}
+              key={buyer.email}
             >
               <p>{buyer.name}</p>
             </div>
@@ -111,30 +112,30 @@ const Approval = () => {
         </div>
       </div>
 
-      {buyer && (
+      {selectedBuyer && (
         <div className="w-3/5 flex justify-center items-center">
           <div className="m-2 flex-col justify-center">
             <div className="flex items-center gap-2 text-3xl">
               <FaBuilding className="text-green-500 text-3xl" />
-              <h2>{buyer.name}</h2>
+              <h2>{selectedBuyer.name}</h2>
             </div>
             <div className="mt-4">
               <div className="flex items-center gap-2">
                 <TiPhone className="text-green-500 text-xl" />
-                <p>{buyer.phone}</p>
+                <p>{selectedBuyer.phone}</p>
               </div>
             </div>
             <div className="mt-4">
               <div className="flex items-center gap-2">
                 <MdEmail className="text-green-500 text-xl" />
-                <p>{buyer.email}</p>
+                <p>{selectedBuyer.email}</p>
               </div>
             </div>
-            {buyer.urlToDoc && (
+            {selectedBuyer.urlToDoc && (
               <div className="mt-4">
                 <div className="flex items-center gap-2">
                   <FaRegFileLines className="text-green-500 text-xl" />
-                  <Link href={buyer.urlToDoc}>see document</Link>
+                  <Link href={selectedBuyer.urlToDoc}>see document</Link>
                 </div>
               </div>
             )}
@@ -144,7 +145,7 @@ const Approval = () => {
                 <TiTick className="text-blue-500 text-xl" />
                 <p
                   className="text-blue-500"
-                  onClick={() => approveBuyer(buyer.email)}
+                  onClick={() => approveBuyer(selectedBuyer.email)}
                 >
                   Approve
                 </p>
@@ -153,7 +154,7 @@ const Approval = () => {
                 <MdDelete className="text-red-500 text-xl" />
                 <p
                   className="text-red-500"
-                  onClick={() => deleteBuyer(buyer.email)}
+                  onClick={() => deleteBuyer(selectedBuyer.email)}
                 >
                   Delete
                 </p>

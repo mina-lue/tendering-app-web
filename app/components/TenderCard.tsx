@@ -84,13 +84,13 @@ const TenderCard = ( props : {tender: Tender} ) => {
   }, [props.tender.updatedAt]);
 
     return (
-        <div className='bg-[#164B30] w-full rounded-sm shadow-sm p-2 mb-2 hover:bg-[#22734B]'>
+        <div className='bg-[#164B30] w-full rounded-sm shadow-sm sm:p-2 mb-2 hover:bg-[#22734B]'>
             <div className='flex justify-between items-center'>
                 <div className="flex items-center gap-1 ml-2">
                     <FaBuilding className="text-green-500"/>
-                    <h2 className='font-semibold text-xl text-green-600'>{company?.name}</h2>
+                    <h2 className='font-semibold sm:text-xl text-green-600'>{company?.name}</h2>
                 </div>
-                <div className="flex items-center gap-1 text-sm mr-2 text-green-200">
+                <div className="sm:flex items-center gap-1 text-sm hidden mr-2 text-green-200">
                     <MdCalendarMonth />
                     <p > from { new Date(props.tender.openAt).toLocaleDateString()}, {new Date(props.tender.openAt).toLocaleTimeString()} to {new Date(props.tender.closeAt).toLocaleDateString()}, {new Date(props.tender.closeAt).toLocaleTimeString()}</p>
                 </div>
